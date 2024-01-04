@@ -1,4 +1,4 @@
-use mal_query::myanimelist::{builders::{Builder, AddFields, SearchBuilder, SeasonalBuilder}, models::{AiringStatus, Season}};
+use mal_query::myanimelist::{builders::{Builder, AddFields, SearchBuilder, SeasonalBuilder, UserListBuilder}, models::{AiringStatus, Season, Status, Sort}};
 
 #[tokio::test]
 async fn full_builder_works_as_expected() {
@@ -169,5 +169,36 @@ async fn seasonal_builder_works_as_expected() {
     }
 }
 
-// TODO: userListBuilder
-// maybe test to see if it gets full list_status
+#[tokio::test]
+async fn full_userlist_builder_works_as_intended() {
+    let test = UserListBuilder::new("naginis_api")
+        .status(Status::Completed)
+        .sort(Sort::ListScore)
+        .limit(2)
+        .offset(1)
+        .include_list_status()
+        .run()
+        .await;
+
+    match test {
+        Err(_e) => assert!(false),
+        Ok(data) => {
+            assert_eq!(data.data.len(), 1);
+        }
+    }
+}
+
+#[tokio::test]
+async fn small_userlist_builder_works_as_intended() {
+    let test = UserListBuilder::new("naginis_api")
+        .status(Status::Watching)
+        .run()
+        .await;
+
+    match test {
+        Err(_e) => assert!(false),
+        Ok(data) => {
+            assert_eq!(data.data.len(), 4);
+        }
+    }
+}
