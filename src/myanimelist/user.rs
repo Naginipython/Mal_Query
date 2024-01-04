@@ -32,7 +32,7 @@ impl UpdateAnime {
     // Example usage:
     ```
     use mal_query::myanimelist::user::UpdateAnime;
-    async fn example() {
+    async fn update_example() {
         let status = UpdateAnime::new(33)
             .update_score(10)
             .expect("Score should be between 0-10")
@@ -64,7 +64,9 @@ impl UpdateAnime {
             return Err(format!("Request failed with status {:?}", res.status()))?;
         }
     }
-    // TODO: describe
+    /**
+    Adds an update to the user's status to the Update
+    */
     pub fn update_status(&mut self, new_status: Status) -> &mut Self {
         let s: &str;
         match new_status {
@@ -77,34 +79,46 @@ impl UpdateAnime {
         self.params.insert("status".to_string(), s.to_string());
         self
     }
-    // TODO: describe
+    /**
+    Adds an update to the user's is_rewatching to the Update
+    */
     pub fn update_is_rewatching(&mut self, new_is_rewatching: bool) -> &mut Self {
         self.params.insert("is_rewatching".to_string(), new_is_rewatching.to_string());
         self
     }
-    // TODO: describe
+    /**
+    Adds an update to the user's score to the Update
+    */
     pub fn update_score(&mut self, new_score: u32) -> Result<&mut Self, Box<dyn Error>> {
         if new_score > 10 { return Err("Score has to be 0-10")? }
         self.params.insert("score".to_string(), new_score.to_string());
         Ok(self)
     }
-    // TODO: describe
+    /**
+    Adds an update to the user's number of watched episodes to the Update
+    */
     pub fn update_num_watched_episodes(&mut self, new_num_watched_episodes: u32) -> &mut Self {
         self.params.insert("num_watched_episodes".to_string(), new_num_watched_episodes.to_string());
         self
     }
-    // TODO: describe
+    /**
+    Adds an update to the user's personal priority to the Update
+    */
     pub fn update_priority(&mut self, new_priority: u32) -> Result<&mut Self, Box<dyn Error>> {
         if new_priority > 2 { return Err("Priority has to be 0-2")? }
         self.params.insert("priority".to_string(), new_priority.to_string());
         Ok(self)
     }
-    // TODO: describe
+    /**
+    Adds an update to the user's number of times rewatched to the Update
+    */
     pub fn update_num_times_rewatched(&mut self, new_num_times_rewatched: u32) -> &mut Self {
         self.params.insert("num_times_rewatched".to_string(), new_num_times_rewatched.to_string());
         self
     }
-    // TODO: describe
+    /**
+    Adds an update to the user's rewatch value to the Update
+    */
     pub fn update_rewatch_value(&mut self, new_rewatch_value: u32) -> Result<&mut Self, Box<dyn Error>> {
         if new_rewatch_value > 5 { return Err("rewatch_value has to be 0-5")? }
         self.params.insert("rewatch_value".to_string(), new_rewatch_value.to_string());
@@ -132,7 +146,10 @@ impl UpdateAnime {
     // }
 }
 
-// TODO: describe
+/**
+Deletes an anime of the corresponding ID from the User's MyAnimeList database.<br>
+User MUST be loggin in with the `login` function, and have a token generated for them for this to be used.
+*/
 pub async fn delete_anime(id: u32) -> Result<(), Box<dyn Error>> {
     let url = format!("https://api.myanimelist.net/v2/anime/{id}/my_list_status");
     let token = TOKEN.lock()?;

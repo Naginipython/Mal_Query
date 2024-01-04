@@ -6,13 +6,44 @@ pub struct Builder {
     url: String,
 }
 impl Builder {
-    // TODO: describe
+    /**
+    Takes an anime ID, and initializes a single entry retriever for the corresponding anime
+    */
     pub fn new(id: u32) -> Self {
         Builder {
             url: format!("https://api.myanimelist.net/v2/anime/{id}?fields=").to_string(),
         }
     }
-    // TODO: describe
+    /**
+    Calls the MyAnimeList API to recieve anime created by the builder, based on the ID 
+    and fields added from the other methods.<br>
+    The user does not need to be logged in, aside from using the `.add_my_list_status()` 
+    to the result. <br>
+    This method returns a Result, containing either the data in a `MalAnimeData`, or an error.
+    Example usage:
+    ```
+    use mal_query::myanimelist::builders::{Builder, AddFields};
+    async fn builder_example() {
+        let berserk = Builder::new(33)
+            .add_status()
+            .add_num_episodes()
+            .run()
+            .await;
+        match berserk {
+            Err(_e) => assert!(false),
+            Ok(data) => {
+                assert!(
+                    data
+                    .title
+                    .to_lowercase()
+                    .contains("berserk")
+                );
+                assert_eq!(data.id, 33);
+            }
+        }
+    }
+    ```
+    */
     pub async fn run(&self) -> Result<MalAnimeData, Box<dyn Error>> {
         run_get(&self.url).await
     }
@@ -22,13 +53,45 @@ pub struct SearchBuilder {
     url: String,
 }
 impl SearchBuilder {
-    // TODO: describe
+    /**
+    Takes an anime name and limiter, and initializes a search entry retriever for the corresponding anime
+    */
     pub fn new(name: &str, limit: u32) -> Self {
         SearchBuilder {
             url: format!("https://api.myanimelist.net/v2/anime?q={name}&limit={limit}&fields=").to_string(),
         }
     }
-    // TODO: describe
+    /**
+    Calls the MyAnimeList API to recieve anime created by the builder, based on the name, a limiter, 
+    and fields added from the other methods.<br>
+    The user does not need to be logged in, aside from using the `.add_my_list_status()` 
+    to the result. <br>
+    This method returns a Result, containing either the data in a `MalAnimeSearch`, or an error.
+    Example usage:
+    ```
+    use mal_query::myanimelist::builders::{SearchBuilder, AddFields};
+    async fn search_builder_example() {
+        let berserk = SearchBuilder::new("berserk", 1)
+            .add_start_date()
+            .add_rank()
+            .run()
+            .await;
+        match berserk {
+            Err(_e) => assert!(false),
+            Ok(data_vec) => {
+                let data = data_vec.get(0).unwrap();
+                assert!(
+                    data
+                    .title
+                    .to_lowercase()
+                    .contains("berserk")
+                );
+                assert_eq!(data.id, 33);
+            }
+        }
+    }
+    ```
+    */
     pub async fn run(&self) -> Result<MalAnimeSearch, Box<dyn Error>> {
         run_search(&self.url).await
     }
@@ -38,7 +101,9 @@ pub struct SeasonalBuilder {
     url: String,
 }
 impl SeasonalBuilder {
-    // TODO: describe
+    /**
+    Takes a year and `Season`, and initializes a seasonal search entry retriever for the corresponding anime
+    */
     pub fn new(year: u32, season: Season) -> Self {
         let s: &str;
         match season {
@@ -51,7 +116,29 @@ impl SeasonalBuilder {
             url: format!("https://api.myanimelist.net/v2/anime/season/{year}/{s}?fields=").to_string(),
         }
     }
-    // TODO: describe
+    /**
+    Calls the MyAnimeList API to recieve anime created by the builder, based on the year, the season, 
+    and fields added from the other methods.<br>
+    The user does not need to be logged in, aside from using the `.add_my_list_status()` 
+    to the result. <br>
+    This method returns a Result, containing either the data in a `MalAnimeSearch`, or an error.
+    Example usage:
+    ```
+    use mal_query::myanimelist::builders::{SeasonalBuilder, AddFields};
+    use mal_query::myanimelist::models::Season;
+    async fn seasonal_builder_example() {
+        let winter_2023 = SeasonalBuilder::new(2023, Season::Winter)
+            .add_start_season()
+            .add_start_date()
+            .run()
+            .await;
+        match winter_2023 {
+            Err(_e) => assert!(false),
+            Ok(data_vec) => assert!(true),
+        }
+    }
+    ```
+    */
     pub async fn run(&self) -> Result<MalAnimeSearch, Box<dyn Error>> {
         run_search(&self.url).await
     }
@@ -61,13 +148,17 @@ pub struct UserListBuilder {
     url: String,
 }
 impl UserListBuilder {
-    // TODO: describe
+    /**
+    Takes a MyAnimeList username, and initializes a user's animelist retriever
+    */
     pub fn new(username: &str) -> Self {
         UserListBuilder {
             url: format!("https://api.myanimelist.net/v2/users/{username}/animelist?")
         }
     }
-    // TODO: describe
+    /**
+    A filter added to UserListBuilder that will tell the `run()` to filter by the user's listed status
+    */
     pub fn status(&mut self, status: Status) -> &mut Self {
         let s: &str;
         match status {
@@ -80,7 +171,9 @@ impl UserListBuilder {
         self.url.push_str(&format!("status={s}&"));
         self
     }
-    // TODO: describe
+    /**
+    A filter added to UserListBuilder that will tell the `run()` to sort the User's list
+    */
     pub fn sort(&mut self, sort: Sort) -> &mut Self {
         let s: &str;
         match sort {
@@ -93,22 +186,51 @@ impl UserListBuilder {
         self.url.push_str(&format!("sort={s}&"));
         self
     }
-    // TODO: describe
+    /**
+    A filter added to UserListBuilder that will tell the `run()` to limit the entries in the User's list
+    */
     pub fn limit(&mut self, limit: u32) -> &mut Self {
         self.url.push_str(&format!("limit={limit}&"));
         self
     }
-    // TODO: describe
+    /**
+    A filter added to UserListBuilder that will tell the `run()` to offset the starting point of the user's list.
+    For example, if the limit is 10 for a first `run()`, and you want the 10 afterwards, you'd add `.offset(10)`
+    */
     pub fn offset(&mut self, offset: u32) -> &mut Self {
         self.url.push_str(&format!("offset={offset}&"));
         self
     }
-    // TODO: describe
+    /**
+    A field added to UserListBuilder that will tell the `run()` to add the user's list details
+    */
     pub fn include_list_status(&mut self) -> &mut Self {
         self.url.push_str("fields=list_status{{is_rewatching,num_times_rewatched,rewatch_value,priority,tags,comments,start_date,end_date}}&");
         self
     }
-    // TODO: describe
+    /**
+    Calls the MyAnimeList API to recieve a user's animelist created by the builder, based on the username, 
+    and fields added from the other methods.<br>
+    The user does not need to be logged in, aside from using the `.add_my_list_status()` 
+    to the result. The user searched must also not be private<br>
+    This method returns a Result, containing either the data in a `MalAnimeSearch`, or an error.
+    Example usage:
+    ```
+    use mal_query::myanimelist::builders::UserListBuilder;
+    use mal_query::myanimelist::models::Status;
+    async fn user_list_builder_example() {
+        let api = UserListBuilder::new("naginis_api")
+            .limit(10)
+            .status(Status::Watching)
+            .run()
+            .await;
+        match api {
+            Err(_e) => assert!(false),
+            Ok(data_vec) => assert!(true),
+        }
+    }
+    ```
+    */
     pub async fn run(&self) -> Result<MalAnimeSearch, Box<dyn Error>> {
         run_search(&self.url).await
     }

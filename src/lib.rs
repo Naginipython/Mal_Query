@@ -3,9 +3,10 @@ pub mod myanimelist;
 #[cfg(feature = "jikan")]
 pub mod jikan;
 
-// TODO: Give descriptions to every pub fn (builders, login, users)
+// TODO: tests for UserListBuilder
 // TODO: implement updating tags, comments, start_date, finish_date
 // TODO: test updating tags, comments, start_date, finish_date
+// TODO: describe tags, comments, start_date, finish_date
 // TODO: Launch 1.0
 
 // TODO: feature: append_fields to builds, find intuitive way to add many fields, or Fields::All
