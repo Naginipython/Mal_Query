@@ -15,7 +15,10 @@ async fn full_update_works_as_expected() {
         .update_num_times_rewatched(1000) //maxes out 255, it seems
         .update_rewatch_value(5)
         .expect("Rewatch Value is not valid")
-        // TODO: test tags, comments, start_date, finish_date
+        .update_tags(["test"].to_vec())
+        .update_comments("This is a test")
+        .update_start_date(2023, 1, 4)
+        .update_finish_date(2024, 1, 4)
         .update()
         .await;
     match test {
@@ -28,6 +31,10 @@ async fn full_update_works_as_expected() {
             assert_eq!(data.priority, Some(2));
             assert_eq!(data.num_times_rewatched, Some(255));
             assert_eq!(data.rewatch_value, Some(5));
+            assert_eq!(data.tags, Some(["test".to_string()].to_vec()));
+            assert_eq!(data.comments, Some("This is a test".to_string()));
+            assert_eq!(data.start_date, Some("2023-01-04".to_string()));
+            assert_eq!(data.finish_date, Some("2024-01-04".to_string()));
 
             let test2 = get_user_animelist("naginis_api", 50).await;
             match test2 {
@@ -45,6 +52,10 @@ async fn full_update_works_as_expected() {
                             assert_eq!(status.priority, Some(2));
                             assert_eq!(status.num_times_rewatched, Some(255));
                             assert_eq!(status.rewatch_value, Some(5));
+                            assert_eq!(status.tags, Some(["test".to_string()].to_vec()));
+                            assert_eq!(status.comments, Some("This is a test".to_string()));
+                            assert_eq!(status.start_date, Some("2023-01-04".to_string()));
+                            assert_eq!(status.finish_date, Some("2024-01-04".to_string()));
                         }
                     }
                 }

@@ -3,7 +3,6 @@ pub mod myanimelist;
 #[cfg(feature = "jikan")]
 pub mod jikan;
 
-// TODO: test updating tags, comments, start_date, finish_date
 // TODO: Launch 1.0
 
 // TODO: feature: append_fields to builds, find intuitive way to add many fields, or Fields::All
