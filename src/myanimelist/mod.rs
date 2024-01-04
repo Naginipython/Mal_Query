@@ -53,7 +53,6 @@ async fn run_get(url: &str) -> Result<MalAnimeData, Box<dyn Error>> {
 
 // To get Vec of anime (search)
 async fn run_search(url: &str) -> Result<MalAnimeSearch, Box<dyn Error>> {
-    println!("{url}");
     let res = client_call(url).await?;
 
     if res.status().is_success() {
