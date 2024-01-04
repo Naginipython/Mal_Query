@@ -62,6 +62,7 @@ async fn main() {
     let test9 = UserListBuilder::new("naginis_api")
         .sort(Sort::ListScore)
         .limit(10)
+        .include_list_status()
         .run()
         .await
         .unwrap();
@@ -78,5 +79,17 @@ async fn main() {
     //     .await
     //     .unwrap();
     // println!("{azumanga:?}");
+
+    let entry = test9.data.iter().find(|anime| anime.list_status.as_ref().unwrap().tags != Some([].to_vec())).unwrap();
+    if let Err(e) = UpdateAnime::from_malanimedata(entry)
+        .update_tags(["test1", "test2", "test3"].to_vec())
+        .update_comments("This is a test")
+        .update_start_date(2024, 1, 4)
+        .update_finish_date(2024, 1, 3)
+        .update()
+        .await {
+            eprintln!("{e}");
+        }
+    println!("{entry:?}");
 
 }

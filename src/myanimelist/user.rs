@@ -124,26 +124,42 @@ impl UpdateAnime {
         self.params.insert("rewatch_value".to_string(), new_rewatch_value.to_string());
         Ok(self)
     }
-    // TODO: create this
-    // pub async fn update_tags(&mut self, new_tags: &str) -> &mut Self {
-    //     self.params.insert("tags".to_string(), new_tags.to_string());
-    //     self
-    // }
-    // TODO: create this
-    // pub async fn update_comment(&mut self, new_comment: &str) -> &mut Self {
-    //     self.params.insert("comment".to_string(), new_comment.to_string());
-    //     self
-    // }
-    // TODO: create this
-    // pub async fn update_start_date(&mut self, new_start_date: &str) -> &mut Self {
-    //     self.params.insert("comment".to_string(), new_start_date.to_string());
-    //     self
-    // }
-    // TODO: create this
-    // pub async fn update_finish_date(&mut self, new_finish_date: &str) -> &mut Self {
-    //     self.params.insert("finish_date".to_string(), new_finish_date.to_string());
-    //     self
-    // }
+    /**
+    Overrides the tags of the user's anime entry<br>
+    ### WARNING:<br> 
+    This will change all tags into ONLY what the params are
+    */
+    pub fn update_tags(&mut self, new_tags: Vec<&str>) -> &mut Self {
+        self.params.insert("tags".to_string(), new_tags.join(","));
+        self
+    }
+    /**
+    Overrides the comment of the user's anime entry
+    */
+    pub fn update_comments(&mut self, new_comments: &str) -> &mut Self {
+        self.params.insert("comments".to_string(), new_comments.to_string());
+        self
+    }
+    /**
+    Changes the Starting Date of the user's entry
+    ### WARNING:<br> 
+    A date beyond today's date given to the MyAnimeList API will simply ignore the parameter.
+    */
+    pub fn update_start_date(&mut self, new_year: u32, new_month: u32, new_day: u32) -> &mut Self {
+        let new_start_date = format!("{:04}-{:02}-{:02}", new_year, new_month, new_day);
+        self.params.insert("start_date".to_string(), new_start_date.to_string());
+        self
+    }
+    /**
+    Changes the Finish Date of the user's entry
+    ### WARNING:<br> 
+    An date beyond today's date given to the MyAnimeList API will simply ignore the parameter.
+    */
+    pub fn update_finish_date(&mut self, new_year: u32, new_month: u32, new_day: u32) -> &mut Self {
+        let new_finish_date = format!("{:04}-{:02}-{:02}", new_year, new_month, new_day);
+        self.params.insert("finish_date".to_string(), new_finish_date.to_string());
+        self
+    }
 }
 
 /**
