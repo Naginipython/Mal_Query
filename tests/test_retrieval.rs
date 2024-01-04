@@ -99,7 +99,7 @@ async fn does_get_user_animelist_receieve_expected_results() {
                 None => assert!(false),
                 Some(result) => {
                     assert_eq!(result.title, "Akame ga Kill!");
-                    assert_eq!(result.my_list_status.as_ref().unwrap().score, 10);
+                    assert_eq!(result.list_status.as_ref().unwrap().score, 10);
                 }
             }
         }

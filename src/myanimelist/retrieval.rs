@@ -89,6 +89,6 @@ Async function, function must be called with `.await`<br>
 Returns a `Result<>`, with a success containing a `MalAnimeData`
 */
 pub async fn get_user_animelist(username: &str, limit: u32) -> Result<MalAnimeSearch, Box<dyn Error>> {
-    let base_url = format!("https://api.myanimelist.net/v2/users/{username}/animelist?fields=list_status&limit={limit}");
+    let base_url = format!("https://api.myanimelist.net/v2/users/{username}/animelist?fields=list_status{{is_rewatching,num_times_rewatched,rewatch_value,priority,tags,comments,start_date,end_date}}&limit={limit}");
     run_search(&base_url).await
 }

@@ -1,11 +1,14 @@
 pub mod myanimelist;
+
+#[cfg(feature = "jikan")]
 pub mod jikan;
 
-// TODO: Various tests (users)
 // TODO: Give descriptions to every pub fn (builders, login, users)
+// TODO: implement updating tags, comments, start_date, finish_date
+// TODO: test updating tags, comments, start_date, finish_date
 // TODO: Launch 1.0
 
-// TODO: fix update user's tag/comment data
+// TODO: feature: append_fields to builds, find intuitive way to add many fields, or Fields::All
 
 // TODO: Manga model MalMangaData
 // TODO: search_manga(?)

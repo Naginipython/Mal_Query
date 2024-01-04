@@ -104,9 +104,15 @@ impl UserListBuilder {
         self
     }
     // TODO: describe
+    pub fn include_list_status(&mut self) -> &mut Self {
+        self.url.push_str("fields=list_status{{is_rewatching,num_times_rewatched,rewatch_value,priority,tags,comments,start_date,end_date}}&");
+        self
+    }
+    // TODO: describe
     pub async fn run(&self) -> Result<MalAnimeSearch, Box<dyn Error>> {
         run_search(&self.url).await
     }
+    // TODO: feature: add Builder addon, to include more data
 }
 
 pub trait AddFields {

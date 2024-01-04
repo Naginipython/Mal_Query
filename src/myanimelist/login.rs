@@ -11,11 +11,10 @@ pub async fn login() -> Result<(), Box<dyn Error>> {
     let code_verify = pkce::code_verifier(50);
     let code_challenge = pkce::code_challenge(&code_verify);
     let auth_url: String = format!("https://myanimelist.net/v1/oauth2/authorize?response_type=code&client_id={}&code_challenge={code_challenge}", CLIENT_ID.clone());
-    // open::that(&auth_url)?; //opens link automatically
-
+    
     // Opens a localhost server
     let server = Server::http("127.0.0.1:8080").expect("Failed to create server");
-    println!("Please visit: {}", auth_url);
+    open::that(&auth_url)?; //opens link automatically
 
     // Wait for the callback with the authorization code
     let mut code = String::new();

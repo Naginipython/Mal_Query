@@ -1,7 +1,8 @@
 use std::{sync::Mutex, fs, error::Error};
 use lazy_static::lazy_static;
+use reqwest::Response;
 use serde_json::Value;
-use self::models::{MalAnimeData, MalAnimeSearch, MyListStatus};
+use self::models::{MalAnimeData, MalAnimeSearch, ListStatus};
 
 pub mod retrieval;
 pub mod login;
@@ -15,8 +16,7 @@ lazy_static! {
     static ref TOKEN: Mutex<String> = Mutex::new(fs::read_to_string("token.txt").unwrap_or(String::new()));
 }
 
-// To get one anime
-async fn run_get(url: &str) -> Result<MalAnimeData, Box<dyn Error>> {
+async fn client_call(url: &str) -> Result<Response, Box<dyn Error>> {
     let token = TOKEN.lock().unwrap();
     let header_key: &str;
     let header_value: String;
@@ -34,25 +34,27 @@ async fn run_get(url: &str) -> Result<MalAnimeData, Box<dyn Error>> {
         .header(header_key, header_value)
         .send()
         .await?;
+    Ok(res)
+}
 
-        if res.status().is_success() {
-            let test = res.text().await?;
-            let data: MalAnimeData = serde_json::from_str(&test).unwrap();
+// To get one anime
+async fn run_get(url: &str) -> Result<MalAnimeData, Box<dyn Error>> {
+    let res = client_call(url).await?;
 
-            return Ok(data);
-        } else {
-            return Err(format!("Request failed with status {:?}", res.status()))?;
-        }
+    if res.status().is_success() {
+        let test = res.text().await?;
+        let data: MalAnimeData = serde_json::from_str(&test).unwrap();
+
+        return Ok(data);
+    } else {
+        return Err(format!("Request failed with status {:?}", res.status()))?;
+    }
 }
 
 // To get Vec of anime (search)
 async fn run_search(url: &str) -> Result<MalAnimeSearch, Box<dyn Error>> {
-    let client = reqwest::Client::new();
-    let res = client
-        .get(url)
-        .header("X-MAL-CLIENT-ID", CLIENT_ID.clone())
-        .send()
-        .await?;
+    println!("{url}");
+    let res = client_call(url).await?;
 
     if res.status().is_success() {
         let data: Value = res.json().await?;
@@ -71,8 +73,8 @@ async fn run_search(url: &str) -> Result<MalAnimeSearch, Box<dyn Error>> {
                 }
                 // get_user_animelist has slightly different results
                 if let Some(s) = v.get("list_status") {
-                    let status = serde_json::from_value::<MyListStatus>(s.clone()).unwrap();
-                    to_push.my_list_status = Some(status);
+                    let status = serde_json::from_value::<ListStatus>(s.clone()).unwrap();
+                    to_push.list_status = Some(status);
                 }
                 result.push(to_push);
             });

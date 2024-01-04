@@ -61,7 +61,7 @@ async fn full_builder_works_as_expected() {
             assert_ne!(data.status, None);
             assert_ne!(data.genres, None);
             // note: small difference
-            assert_eq!(data.my_list_status, None);
+            assert_eq!(data.list_status, None);
 
             assert_ne!(data.start_season, None);
             assert_ne!(data.num_episodes, None);
@@ -111,7 +111,7 @@ async fn small_builder_works_as_expected() {
             assert_eq!(data.updated_at, None);
             assert_eq!(data.media_type, None);
             assert_eq!(data.genres, None);
-            assert_eq!(data.my_list_status, None);
+            assert_eq!(data.list_status, None);
             assert_eq!(data.start_season, None);
             assert_eq!(data.broadcast, None);
             assert_eq!(data.source, None);
@@ -168,3 +168,6 @@ async fn seasonal_builder_works_as_expected() {
         }
     }
 }
+
+// TODO: userListBuilder
+// maybe test to see if it gets full list_status

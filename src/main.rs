@@ -58,24 +58,25 @@ async fn main() {
     //     .to_titles();
     // println!("{test8:?}");
 
-    // let test9 = UserListBuilder::new("Naginipython")
-    //     .sort(Sort::ListScore)
-    //     .limit(10)
-    //     .run()
-    //     .await
-    //     .unwrap()
-    //     .to_titles();
-    // println!("{test9:?}");
-
-    // let test10 = get_user_animelist("Naginipython", 10).await.unwrap().to_titles();
-    // println!("{test10:?}");
-    
-    let test11 = search_anime("azumanga", 2).await.unwrap();
-    let search = test11.get(0).unwrap();
-    let azumanga = Builder::new(search.id)
-        .add_my_list_status()
+    // TODO: add field=list_score or something
+    let test9 = UserListBuilder::new("naginis_api")
+        .sort(Sort::ListScore)
+        .limit(10)
         .run()
         .await
         .unwrap();
-    println!("{azumanga:?}");
+    println!("{:?}", test9);
+
+    // let test10 = get_user_animelist("Naginipython", 10).await.unwrap();
+    // println!("{:?}", test10.get(0).unwrap().list_status);
+    
+    // let test11 = search_anime("azumanga", 2).await.unwrap();
+    // let search = test11.get(0).unwrap();
+    // let azumanga = Builder::new(search.id)
+    //     .add_my_list_status()
+    //     .run()
+    //     .await
+    //     .unwrap();
+    // println!("{azumanga:?}");
+
 }

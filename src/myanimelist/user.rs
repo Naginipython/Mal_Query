@@ -11,7 +11,7 @@ impl UpdateAnime {
     /**
     Takes an anime id, and initializes data for an update
     */
-    pub async fn new(id: u32) -> Self {
+    pub fn new(id: u32) -> Self {
         UpdateAnime {
             id,
             params: HashMap::new(),
@@ -34,7 +34,6 @@ impl UpdateAnime {
     use mal_query::myanimelist::user::UpdateAnime;
     async fn example() {
         let status = UpdateAnime::new(33)
-            .await
             .update_score(10)
             .expect("Score should be between 0-10")
             .update()
@@ -44,7 +43,7 @@ impl UpdateAnime {
     }
     ```
     */
-    pub async fn update(&mut self) -> Result<MyListStatus, Box<dyn Error>> {
+    pub async fn update(&mut self) -> Result<ListStatus, Box<dyn Error>> {
         let url = format!("https://api.myanimelist.net/v2/anime/{}/my_list_status", self.id);
         let token = TOKEN.lock()?;
         if token.is_empty() { return Err("User is not logged in")? }
@@ -59,7 +58,7 @@ impl UpdateAnime {
 
         if res.status().is_success() {
             let data = res.text().await?;
-            let result: MyListStatus = serde_json::from_str(&data)?;
+            let result: ListStatus = serde_json::from_str(&data)?;
             return Ok(result);
         } else {
             return Err(format!("Request failed with status {:?}", res.status()))?;
@@ -90,36 +89,45 @@ impl UpdateAnime {
         Ok(self)
     }
     // TODO: describe
-    pub async fn update_num_watched_episodes(&mut self, new_num_watched_episodes: u32) -> &mut Self {
+    pub fn update_num_watched_episodes(&mut self, new_num_watched_episodes: u32) -> &mut Self {
         self.params.insert("num_watched_episodes".to_string(), new_num_watched_episodes.to_string());
         self
     }
     // TODO: describe
-    pub async fn update_priority(&mut self, new_priority: u32) -> Result<&mut Self, Box<dyn Error>> {
+    pub fn update_priority(&mut self, new_priority: u32) -> Result<&mut Self, Box<dyn Error>> {
         if new_priority > 2 { return Err("Priority has to be 0-2")? }
         self.params.insert("priority".to_string(), new_priority.to_string());
         Ok(self)
     }
     // TODO: describe
-    pub async fn update_num_times_rewatched(&mut self, new_num_times_rewatched: u32) -> &mut Self {
+    pub fn update_num_times_rewatched(&mut self, new_num_times_rewatched: u32) -> &mut Self {
         self.params.insert("num_times_rewatched".to_string(), new_num_times_rewatched.to_string());
         self
     }
     // TODO: describe
-    pub async fn update_rewatch_value(&mut self, new_rewatch_value: u32) -> Result<&mut Self, Box<dyn Error>> {
+    pub fn update_rewatch_value(&mut self, new_rewatch_value: u32) -> Result<&mut Self, Box<dyn Error>> {
         if new_rewatch_value > 5 { return Err("rewatch_value has to be 0-5")? }
         self.params.insert("rewatch_value".to_string(), new_rewatch_value.to_string());
         Ok(self)
     }
-    // TODO: get_anime() doesn't receive complete MyListStatus page, where tag contains data but MAL API doesn't include it.
-    // Update: I don't understand how to get that data from the MyAnimeList API, except when it returns a result of an update
+    // TODO: create this
     // pub async fn update_tags(&mut self, new_tags: &str) -> &mut Self {
     //     self.params.insert("tags".to_string(), new_tags.to_string());
     //     self
     // }
-    // TODO: get_anime() doesn't receive complete MyListStatus page, where comment contains data but MAL API doesn't include it.
+    // TODO: create this
     // pub async fn update_comment(&mut self, new_comment: &str) -> &mut Self {
     //     self.params.insert("comment".to_string(), new_comment.to_string());
+    //     self
+    // }
+    // TODO: create this
+    // pub async fn update_start_date(&mut self, new_start_date: &str) -> &mut Self {
+    //     self.params.insert("comment".to_string(), new_start_date.to_string());
+    //     self
+    // }
+    // TODO: create this
+    // pub async fn update_finish_date(&mut self, new_finish_date: &str) -> &mut Self {
+    //     self.params.insert("finish_date".to_string(), new_finish_date.to_string());
     //     self
     // }
 }

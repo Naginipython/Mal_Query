@@ -161,7 +161,7 @@ pub struct MalAnimeData {
     pub updated_at: Option<String>,
     pub media_type: Option<MediaType>,
     pub status: Option<AiringStatus>,
-    pub my_list_status: Option<MyListStatus>,
+    pub list_status: Option<ListStatus>,
     pub num_episodes: Option<u32>,
     pub start_season: Option<StartSeason>,
     pub broadcast: Option<Broadcast>,
@@ -197,7 +197,7 @@ pub struct Genres {
 }
 
 #[derive(Debug, Deserialize, Serialize, Clone, PartialEq)]
-pub struct MyListStatus {
+pub struct ListStatus {
     pub status: Status,
     pub score: u32,
     pub num_episodes_watched: u32,
