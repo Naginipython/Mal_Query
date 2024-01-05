@@ -5,22 +5,20 @@ use url::Url;
 use tiny_http::Server;
 use super::{CLIENT_ID, TOKEN};
 
-/**
-This function will create a User's authentication token to use more MyAnimeList features, such as updating your lists entries, or viewing your list statistics.<br>
-Calling this function will send the user to a browser to accept the OAuth2.0 authentication, and than use the callback to generate a user's token.<br>
-This function returns a Result, for the programmer to handle `Error` cases.<br>
-Example usage:
-```
-use mal_query::myanimelist::login::login;
-#[tokio::main]
-async fn login_example() {
-    match login().await {
-        Ok(()) => assert!(true),
-        Err(_e) => assert!(false),
-    }
-}
-```
-*/
+/// This function will create a User's authentication token to use more MyAnimeList features, such as updating your lists entries, or viewing your list statistics.<br>
+/// Calling this function will send the user to a browser to accept the OAuth2.0 authentication, and than use the callback to generate a user's token.<br>
+/// This function returns a Result, for the programmer to handle `Error` cases.<br>
+/// ### Example usage:
+/// ```
+/// use mal_query::myanimelist::login::login;
+/// #[tokio::main]
+/// async fn login_example() {
+///     match login().await {
+///         Ok(()) => assert!(true),
+///         Err(_e) => assert!(false),
+///     }
+/// }
+/// ```
 pub async fn login() -> Result<(), Box<dyn Error>> {
     // Creates and sends the url
     let code_verify = pkce::code_verifier(50);
@@ -72,6 +70,4 @@ pub async fn login() -> Result<(), Box<dyn Error>> {
         },
         None => return Err(format!("{json:?}"))?,
     }
-
-    
 }

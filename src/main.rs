@@ -27,12 +27,12 @@ async fn main() {
     // println!("{}", test4.title);
     // let test5: Vec<MalAnimeData> = get_anime_ranking(RankingType::Airing, 10).await.unwrap();
     // println!("{test5:?}");
-    // let test6: MalAnimeData = Builder::new(33)
-    //     .add_id()
-    //     .add_num_episodes()
-    //     .run()
-    //     .await
-    //     .unwrap();
+    let test6: MalAnimeData = Builder::new(33)
+        .add_id()
+        .add_num_episodes()
+        .run()
+        .await
+        .unwrap();
     // println!("{test6:?}");
     // let test7: UpdateAnime = UpdateAnime::new(12291).await.unwrap();
     // let search = search_anime("Gakkougurashi", 5).await.unwrap();
@@ -59,14 +59,14 @@ async fn main() {
     // println!("{test8:?}");
 
     // TODO: add field=list_score or something
-    let test9 = UserListBuilder::new("naginis_api")
-        .sort(Sort::ListScore)
-        .limit(10)
-        .include_list_status()
-        .run()
-        .await
-        .unwrap();
-    println!("{:?}", test9);
+    // let test9 = UserListBuilder::new("naginis_api")
+    //     .sort(Sort::ListScore)
+    //     .limit(10)
+    //     .include_list_status()
+    //     .run()
+    //     .await
+    //     .unwrap();
+    // println!("{:?}", test9);
 
     // let test10 = get_user_animelist("Naginipython", 10).await.unwrap();
     // println!("{:?}", test10.get(0).unwrap().list_status);
@@ -80,16 +80,16 @@ async fn main() {
     //     .unwrap();
     // println!("{azumanga:?}");
 
-    let entry = test9.data.iter().find(|anime| anime.list_status.as_ref().unwrap().tags != Some([].to_vec())).unwrap();
-    if let Err(e) = UpdateAnime::from_malanimedata(entry)
-        .update_tags(["test1", "test2", "test3"].to_vec())
-        .update_comments("This is a test")
-        .update_start_date(2024, 1, 4)
-        .update_finish_date(2024, 1, 3)
-        .update()
-        .await {
-            eprintln!("{e}");
-        }
-    println!("{entry:?}");
+    // let entry = test9.data.iter().find(|anime| anime.list_status.as_ref().unwrap().tags != Some([].to_vec())).unwrap();
+    // if let Err(e) = UpdateAnime::from_malanimedata(entry)
+    //     .update_tags(["test1", "test2", "test3"].to_vec())
+    //     .update_comments("This is a test")
+    //     .update_start_date(2024, 1, 4)
+    //     .update_finish_date(2024, 1, 3)
+    //     .update()
+    //     .await {
+    //         eprintln!("{e}");
+    //     }
+    // println!("{entry:?}");
 
 }
