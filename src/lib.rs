@@ -70,6 +70,7 @@
 
 // TODO: Launch 1.0
 
+// TODO: Update README to include all data
 // TODO: feature: append_fields to builds, find intuitive way to add many fields, or Fields::All
 
 // TODO: Manga model MalMangaData
