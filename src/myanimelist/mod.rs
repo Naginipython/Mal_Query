@@ -14,7 +14,7 @@ pub mod user;
 
 lazy_static! {
     // CLIENT_ID recieve a string from a local file not uploaded here, only containing a MyAnimeList Client Id
-    pub static ref CLIENT_ID: String = fs::read_to_string("secret.txt").unwrap_or(String::new());
+    pub static ref CLIENT_ID: String = fs::read_to_string("api.txt").unwrap_or(String::new());
     pub static ref TOKEN: Mutex<String> = Mutex::new(fs::read_to_string("token.txt").unwrap_or(String::new()));
 }
 
