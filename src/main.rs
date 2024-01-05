@@ -1,5 +1,6 @@
 #[allow(unused_imports)]
 use mal_query::myanimelist::{
+    self,
     builders::*, 
     models::*,
     retrieval::*, 
@@ -10,7 +11,7 @@ use mal_query::myanimelist::{
 #[tokio::main]
 #[allow(unused_variables)]
 async fn main() {
-    // match mal_query::myanimelist::login::login().await {
+    // match myanimelist::login().await {
     //     Ok(()) => println!("Login Successful"),
     //     Err(e) => eprintln!("Error: {e}"),
     // }
@@ -27,12 +28,12 @@ async fn main() {
     // println!("{}", test4.title);
     // let test5: Vec<MalAnimeData> = get_anime_ranking(RankingType::Airing, 10).await.unwrap();
     // println!("{test5:?}");
-    let test6: MalAnimeData = Builder::new(33)
-        .add_id()
-        .add_num_episodes()
-        .run()
-        .await
-        .unwrap();
+    // let test6: MalAnimeData = Builder::new(33)
+    //     .add_id()
+    //     .add_num_episodes()
+    //     .run()
+    //     .await
+    //     .unwrap();
     // println!("{test6:?}");
     // let test7: UpdateAnime = UpdateAnime::new(12291).await.unwrap();
     // let search = search_anime("Gakkougurashi", 5).await.unwrap();
