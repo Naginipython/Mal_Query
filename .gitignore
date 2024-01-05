@@ -14,7 +14,7 @@ Cargo.lock
 *.pdb
 
 # MyAnimeList Client Id
-secret.txt
+api.txt
 
 # Debugging token
 token.txt
