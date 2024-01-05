@@ -7,8 +7,13 @@ description = "This crate connects to the MyAnimeList public API v2 Beta, and al
 license = "MIT"
 repository = "https://github.com/Naginipython/Mal_Query"
 readme = "README.md"
-include = ["/api.txt"]
-exclude = ["/tests/test_users.rs"]
+keywords = ["myanimelist", "mal", "anime", "api"]
+
+[package.metadata.'exclude']
+exclude = ["tests/test_users.rs"]
+
+[package.metadata.'include']
+include = ["api.txt"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
