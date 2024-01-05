@@ -5,6 +5,8 @@ authors = ["naginipython"]
 edition = "2021"
 description = "This crate connects to the MyAnimeList public API v2 Beta, and allows the user to intuitively receive anime data."
 license = "MIT"
+repository = "https://github.com/Naginipython/Mal_Query"
+readme = "README.md"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
