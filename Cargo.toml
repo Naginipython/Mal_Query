@@ -9,12 +9,6 @@ repository = "https://github.com/Naginipython/Mal_Query"
 readme = "README.md"
 keywords = ["myanimelist", "mal", "anime", "api"]
 
-[package.metadata.'exclude']
-exclude = ["tests/test_users.rs"]
-
-[package.metadata.'include']
-include = ["api.txt"]
-
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
