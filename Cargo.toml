@@ -30,4 +30,5 @@ opt-level = 0
 [profile.release]
 opt-level = 3
 
-include = ["/api.txt", "/tests/test_users.rs"]
+include = ["/api.txt"]
+exclude = ["/tests/test_users.rs"]
