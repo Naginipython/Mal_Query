@@ -67,6 +67,7 @@
 //!         .unwrap();
 //! 
 //!     // Useful method to show titles easier:
+//!     // You can also use `.titles()` to get references if you don't want to consume the MalAnimeSearch
 //!     let results: Vec<String> = one_search.to_titles();
 //! }
 //! ```
