@@ -7,9 +7,9 @@ async fn does_search_anime_receive_expected_results() {
         Err(_e) => assert!(false),
         Ok(data) => {
             assert_eq!(data.data.len(), 3);
-            let s = data.to_titles();
+            let s = data.titles();
             println!("{s:?}");
-            s.iter().for_each(|anime| {
+            s.into_iter().for_each(|anime| {
                 assert!(anime.to_lowercase().contains("jujutsu"))
             })
         }
