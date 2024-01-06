@@ -32,7 +32,7 @@
 //!     let one_piece_by_url: MalAnimeData = get_anime_from_url("https://myanimelist.net/anime/21/One_Piece").await.unwrap();
 //! 
 //!     // Gets the top 10 anime of all time, according to MyAnimeList, with title, id, and main_picture data
-//!     let rankings: MalAnimeSearch = get_anime_ranking(RankingType::All, 10).await.unwrap();
+//!     let rankings: MalAnimeSearch = get_anime_rankings(RankingType::All, 10).await.unwrap();
 //! 
 //!     // Gets 10 anime entries from a user's database, as long as it is public, or logged in. It contains title, id, and main_picture data
 //!     let test10 = get_user_animelist("naginis_api", 10).await.unwrap();
@@ -49,7 +49,7 @@
 //! 
 //!     // UpdateAnime updates an anime in the user's database. The user must be logged in for this to work.
 //!     // `new` can be replace with `from_malanimedata`, to use a MalAnimeData type
-//!     let one_piece_update: UpdateAnime = UpdateAnime::new(21)
+//!     let one_piece_update: ListStatus = UpdateAnime::new(21)
 //!         .update_score(10)
 //!         .expect("Score is invalid")
 //!         .update()

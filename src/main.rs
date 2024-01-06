@@ -15,8 +15,8 @@ async fn main() {
     //     Ok(()) => println!("Login Successful"),
     //     Err(e) => eprintln!("Error: {e}"),
     // }
-    // let test: MalAnimeSearch = search_anime("One Piece", 1).await.unwrap();
-    // println!("{test:?}");
+    let test: MalAnimeSearch = search_anime("One Piece", 1).await.unwrap();
+    println!("{test:?}");
     // let test2: Vec<MalAnimeData> = get_season(2023, Season::Winter).await.unwrap();
     // println!("{test2:?}");
     // let test3: MalAnimeData = get_anime(13659).await.unwrap();
