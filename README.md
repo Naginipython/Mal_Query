@@ -65,5 +65,7 @@ async fn example() {
         .run()
         .await
         .unwrap();
+    // Useful method to show titles easier:
+    let results: Vec<String> = one_search.to_titles();
 }
 ```
