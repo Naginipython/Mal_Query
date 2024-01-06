@@ -1,6 +1,8 @@
 # Mal_Query
 This crate connects to the MyAnimeList public API v2 Beta, and allows the user to intuitively receive anime
 data.
+
+Note: When you clone this repo, it does NOT include a MyAnimeList Client Id. Create a file called api.txt, paste only the key in there, and put that file in the top level of this repo (where README is)
 # Examples
 ```
 use mal_query::myanimelist::{
