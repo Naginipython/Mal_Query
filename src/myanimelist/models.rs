@@ -275,7 +275,7 @@ impl MalAnimeSearch {
     pub fn to_titles(self) -> Vec<String> {
         self.data.into_iter().map(|x| x.title).collect()
     }
-    pub fn get<'a>(&'a self, index: usize) -> Option<&'a MalAnimeData> {
+    pub fn get(&self, index: usize) -> Option<&MalAnimeData> {
         self.data.get(index)
     }
 }

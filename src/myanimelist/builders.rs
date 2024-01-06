@@ -95,13 +95,12 @@ pub struct SeasonalBuilder {
 impl SeasonalBuilder {
     /// Takes a year and `Season`, and initializes a seasonal search entry retriever for the corresponding anime
     pub fn new(year: u32, season: Season) -> Self {
-        let s: &str;
-        match season {
-            Season::Winter => s = "winter",
-            Season::Spring => s = "spring",
-            Season::Summer => s = "summer",
-            Season::Fall => s = "fall"
-        }
+        let s: &str = match season {
+            Season::Winter => "winter",
+            Season::Spring => "spring",
+            Season::Summer => "summer",
+            Season::Fall => "fall"
+        };
         SeasonalBuilder {
             url: format!("https://api.myanimelist.net/v2/anime/season/{year}/{s}?fields=").to_string(),
         }
@@ -144,27 +143,25 @@ impl UserListBuilder {
     }
     /// A filter added to UserListBuilder that will tell the `run()` to filter by the user's listed status
     pub fn status(&mut self, status: Status) -> &mut Self {
-        let s: &str;
-        match status {
-            Status::Completed => s = "completed",
-            Status::Dropped => s = "dropped",
-            Status::OnHold => s = "on_hold",
-            Status::PlanToWatch => s = "plan_to_watch",
-            Status::Watching => s = "watching",
-        }
+        let s: &str = match status {
+            Status::Completed => "completed",
+            Status::Dropped => "dropped",
+            Status::OnHold => "on_hold",
+            Status::PlanToWatch => "plan_to_watch",
+            Status::Watching => "watching",
+        };
         self.url.push_str(&format!("status={s}&"));
         self
     }
     /// A filter added to UserListBuilder that will tell the `run()` to sort the User's list
     pub fn sort(&mut self, sort: Sort) -> &mut Self {
-        let s: &str;
-        match sort {
-            Sort::AnimeId => s = "anime_id",
-            Sort::AnimeStartDate => s = "anime_start_date",
-            Sort::AnimeTitle => s = "anime_title",
-            Sort::ListScore => s = "list_score",
-            Sort::ListUpdatedAt => s = "list_updated_at"
-        }
+        let s: &str = match sort {
+            Sort::AnimeId => "anime_id",
+            Sort::AnimeStartDate => "anime_start_date",
+            Sort::AnimeTitle => "anime_title",
+            Sort::ListScore => "list_score",
+            Sort::ListUpdatedAt => "list_updated_at"
+        };
         self.url.push_str(&format!("sort={s}&"));
         self
     }

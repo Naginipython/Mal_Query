@@ -65,9 +65,9 @@ pub async fn login() -> Result<(), Box<dyn Error>> {
 
             // Saves code to file
             let mut file = File::create("token.txt")?;
-            file.write_all(&*token.as_bytes())?;
+            file.write_all(token.as_bytes())?;
             Ok(())
         },
-        None => return Err(format!("{json:?}"))?,
+        None => Err(format!("{json:?}"))?,
     }
 }

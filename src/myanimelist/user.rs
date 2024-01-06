@@ -53,21 +53,20 @@ impl UpdateAnime {
         if res.status().is_success() {
             let data = res.text().await?;
             let result: ListStatus = serde_json::from_str(&data)?;
-            return Ok(result);
+            Ok(result)
         } else {
-            return Err(format!("Request failed with status {:?}", res.status()))?;
+            Err(format!("Request failed with status {:?}", res.status()))?
         }
     }
     /// Adds an update to the user's status to the Update
     pub fn update_status(&mut self, new_status: Status) -> &mut Self {
-        let s: &str;
-        match new_status {
-            Status::Completed => s = "completed",
-            Status::Dropped => s = "dropped",
-            Status::OnHold => s = "on_hold",
-            Status::PlanToWatch => s = "plan_to_watch",
-            Status::Watching => s = "watching",
-        }
+        let s: &str = match new_status {
+            Status::Completed => "completed",
+            Status::Dropped => "dropped",
+            Status::OnHold => "on_hold",
+            Status::PlanToWatch => "plan_to_watch",
+            Status::Watching => "watching",
+        };
         self.params.insert("status".to_string(), s.to_string());
         self
     }

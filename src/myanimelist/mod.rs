@@ -15,7 +15,7 @@ pub mod user;
 lazy_static! {
     // Couldn't find effective way to hide this
     pub static ref CLIENT_ID: String = String::from("f7e5c56ef3561bb0a290a13d35b02c0b");
-    pub static ref TOKEN: Mutex<String> = Mutex::new(fs::read_to_string("token.txt").unwrap_or(String::new()));
+    pub static ref TOKEN: Mutex<String> = Mutex::new(fs::read_to_string("token.txt").unwrap_or_default());
 }
 
 async fn client_call(url: &str) -> Result<Response, Box<dyn Error>> {
@@ -47,9 +47,9 @@ async fn run_get(url: &str) -> Result<MalAnimeData, Box<dyn Error>> {
         let test = res.text().await?;
         let data: MalAnimeData = serde_json::from_str(&test).unwrap();
 
-        return Ok(data);
+        Ok(data)
     } else {
-        return Err(format!("Request failed with status {:?}", res.status()))?;
+        Err(format!("Request failed with status {:?}", res.status()))?
     }
 }
 
@@ -80,9 +80,9 @@ async fn run_search(url: &str) -> Result<MalAnimeSearch, Box<dyn Error>> {
                 result.push(to_push);
             });
 
-        return Ok(MalAnimeSearch::new(result));
+        Ok(MalAnimeSearch::new(result))
     } else {
-        return Err(format!("Request failed with status {:?}", res.status()))?;
+        Err(format!("Request failed with status {:?}", res.status()))?
     }
 }
 

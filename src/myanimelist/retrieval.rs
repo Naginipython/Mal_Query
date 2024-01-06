@@ -14,13 +14,12 @@ pub async fn search_anime(name: &str, limit: u32) -> Result<MalAnimeSearch, Box<
 /// Async function, function must be called with `.await`<br>
 /// Returns a `Result<>`, with a success containing a `MalAnimeData`
 pub async fn get_season(year: u32, season: Season) -> Result<MalAnimeSearch, Box<dyn Error>> {
-    let s: &str;
-    match season {
-        Season::Winter => s = "winter",
-        Season::Spring => s = "spring",
-        Season::Summer => s = "summer",
-        Season::Fall => s = "fall"
-    }
+    let s: &str = match season {
+        Season::Winter => "winter",
+        Season::Spring => "spring",
+        Season::Summer => "summer",
+        Season::Fall => "fall"
+    };
     let base_url = format!("https://api.myanimelist.net/v2/anime/season/{year}/{s}?limit=500");
     run_search(&base_url).await
 }
@@ -40,7 +39,7 @@ pub async fn get_anime(id: u32) -> Result<MalAnimeData, Box<dyn Error>> {
 /// Async function, function must be called with `.await`<br>
 /// Returns a `Result<>`, with a success containing a `MalAnimeData`
 pub async fn get_anime_from_url(url: &str) -> Result<MalAnimeData, Box<dyn Error>> {
-    let parsed = Url::parse(&url)?;
+    let parsed = Url::parse(url)?;
     for segment in parsed.path_segments().ok_or("URL has no path")? {
         if let Ok(id) = segment.parse::<u32>() {
             let result = get_anime(id).await?;
@@ -54,19 +53,18 @@ pub async fn get_anime_from_url(url: &str) -> Result<MalAnimeData, Box<dyn Error
 /// Async function, function must be called with `.await`<br>
 /// Returns a `Result<>`, with a success containing a `MalAnimeData`
 pub async fn get_anime_rankings(ranking_type: RankingType, limit: u32) -> Result<MalAnimeSearch, Box<dyn Error>> {
-    let r_type: &str;
-    match ranking_type {
-        RankingType::All => r_type = "all",
-        RankingType::Airing => r_type = "airing",
-        RankingType::Upcoming => r_type = "upcoming",
-        RankingType::TV => r_type = "tv",
-        RankingType::OVA => r_type = "ova",
-        RankingType::Movie => r_type = "movie",
-        RankingType::Special => r_type = "special",
-        RankingType::ByPopularity => r_type = "bypopularity",
-        RankingType::Favorite => r_type = "favorite",
-        RankingType::None => r_type = ""
-    }
+    let r_type: &str = match ranking_type {
+        RankingType::All => "all",
+        RankingType::Airing => "airing",
+        RankingType::Upcoming => "upcoming",
+        RankingType::TV => "tv",
+        RankingType::OVA => "ova",
+        RankingType::Movie => "movie",
+        RankingType::Special => "special",
+        RankingType::ByPopularity => "bypopularity",
+        RankingType::Favorite => "favorite",
+        RankingType::None => ""
+    };
     let base_url = format!("https://api.myanimelist.net/v2/anime/ranking?ranking_type={r_type}&limit={limit}");
     run_search(&base_url).await
 }
