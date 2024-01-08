@@ -2,7 +2,7 @@ use std::{sync::Mutex, fs, error::Error};
 use lazy_static::lazy_static;
 use reqwest::Response;
 use serde_json::Value;
-use self::models::{MalAnimeData, MalAnimeSearch, ListStatus};
+use self::models::*;
 
 pub use login::login;
 
@@ -86,3 +86,51 @@ async fn run_search(url: &str) -> Result<MalAnimeSearch, Box<dyn Error>> {
     }
 }
 
+// ---------- Manga ----------
+
+// To get one manga
+async fn run_get_manga(url: &str) -> Result<MalMangaData, Box<dyn Error>> {
+    let res = client_call(url).await?;
+
+    if res.status().is_success() {
+        let test = res.text().await?;
+        let data: MalMangaData = serde_json::from_str(&test).unwrap();
+
+        Ok(data)
+    } else {
+        Err(format!("Request failed with status {:?}", res.status()))?
+    }
+}
+
+// To get Vec of manga (search)
+async fn run_search_manga(url: &str) -> Result<MalMangaSearch, Box<dyn Error>> {
+    let res = client_call(url).await?;
+
+    if res.status().is_success() {
+        let data: Value = res.json().await?;
+        // Takes the data, and throws it into a Vec of MalAnimeData
+        let mut result: Vec<MalMangaData> = Vec::new();
+        data["data"]
+            .as_array()
+            .expect("Expected an array")
+            .iter()
+            .for_each(|v| {
+                let x = v.get("node").unwrap();
+                let mut to_push = serde_json::from_value::<MalMangaData>(x.clone()).unwrap();
+                // get_anime_rankings has slightly different results
+                if let Some(r) = v.get("ranking") {
+                    to_push.rank = Some(r["rank"].as_u64().unwrap() as u32);
+                }
+                // get_user_animelist has slightly different results
+                if let Some(s) = v.get("list_status") {
+                    let status = serde_json::from_value::<ListStatus>(s.clone()).unwrap();
+                    to_push.list_status = Some(status);
+                }
+                result.push(to_push);
+            });
+
+        Ok(MalMangaSearch::new(result))
+    } else {
+        Err(format!("Request failed with status {:?}", res.status()))?
+    }
+}

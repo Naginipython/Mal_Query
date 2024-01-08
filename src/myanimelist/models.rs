@@ -39,7 +39,7 @@ pub enum Nsfw {
 }
 
 #[derive(Debug, Deserialize, PartialEq)]
-pub enum MediaType {
+pub enum AnimeMediaType {
     #[serde(rename = "unknown")]
     Unknown,
     #[serde(rename = "tv")]
@@ -139,7 +139,7 @@ pub enum Sort {
     AnimeId
 }
 
-// -------- MalAnimeDataDetailed --------
+// -------- MalAnimeData --------
 
 #[derive(Debug, Deserialize, Default, PartialEq)]
 pub struct MalAnimeData {
@@ -159,7 +159,7 @@ pub struct MalAnimeData {
     pub genres: Option<Vec<Genres>>,
     pub created_at: Option<String>,
     pub updated_at: Option<String>,
-    pub media_type: Option<MediaType>,
+    pub media_type: Option<AnimeMediaType>,
     pub status: Option<AiringStatus>,
     pub list_status: Option<ListStatus>,
     pub num_episodes: Option<u32>,
@@ -171,8 +171,8 @@ pub struct MalAnimeData {
     pub studios: Option<Vec<Studios>>,
     pub pictures: Option<Vec<Picture>>,
     pub background: Option<String>,
-    pub related_anime: Option<Vec<Related>>,
-    pub related_manga: Option<Vec<Related>>, // TODO: Add Manga Related
+    pub related_anime: Option<Vec<RelatedAnime>>,
+    pub related_manga: Option<Vec<RelatedManga>>,
     pub recommendations: Option<Vec<Recommended>>,
     pub statistics: Option<Statistics>,
 }
@@ -231,7 +231,7 @@ pub struct Studios {
 }
 
 #[derive(Debug, Deserialize, PartialEq)]
-pub struct Related {
+pub struct RelatedAnime {
     pub node: MalAnimeData,
     pub relation_type: String,
 }
@@ -256,7 +256,9 @@ pub struct StatisticsStatus {
     pub plan_to_watch: String,
 }
 
-// -------- Functions --------
+// -------- Methods --------
+
+// TODO: create getters for option layered structs
 
 #[derive(Debug)]
 pub struct MalAnimeSearch {
@@ -276,6 +278,127 @@ impl MalAnimeSearch {
         self.data.into_iter().map(|x| x.title).collect()
     }
     pub fn get(&self, index: usize) -> Option<&MalAnimeData> {
+        self.data.get(index)
+    }
+}
+
+// -------- Manga Enums ---------
+
+#[derive(Debug, Deserialize, PartialEq)]
+pub enum MangaRankingType {
+    All,
+    Manga,
+    Novel,
+    LightNovel,
+    OneShot,
+    Doujin,
+    Manhwa,
+    Manhua,
+    ByPopularity,
+    Favorite,
+    None,
+}
+
+#[derive(Debug, Deserialize, PartialEq)]
+pub enum MangaMediaType {
+    #[serde(rename = "unknown")]
+    Unknown,
+    #[serde(rename = "manga")]
+    Manga,
+    #[serde(rename = "novel")]
+    Novel,
+    #[serde(rename = "light_novel")]
+    LightNovel,
+    #[serde(rename = "one_shot")]
+    OneShot,
+    #[serde(rename = "doujinshi")]
+    Doujinshi,
+    #[serde(rename = "manhwa")]
+    Manhwa,
+    #[serde(rename = "manhua")]
+    Manhua,
+    #[serde(rename = "oel")]
+    OEL,
+}
+
+#[derive(Debug, Deserialize, PartialEq)]
+pub enum PublishingStatus {
+    #[serde(rename = "finished")]
+    Finished,
+    #[serde(rename = "currently_publishing")]
+    CurrentlyPublishing,
+    #[serde(rename = "not_yet_published")]
+    NotYetPublished,
+}
+
+// -------- MalMangaData --------
+
+#[derive(Debug, Deserialize, Default, PartialEq)]
+pub struct MalMangaData {
+    pub id: u32,
+    pub title: String,
+    pub main_picture: Picture,
+    pub alternative_titles: Option<AlternativeTitles>,
+    pub start_date: Option<String>,
+    pub end_date: Option<String>,
+    pub synopsis: Option<String>,
+    pub mean: Option<f32>,
+    pub rank: Option<u32>,
+    pub popularity: Option<u32>,
+    pub num_list_users: Option<u32>,
+    pub num_scoring_users: Option<u32>,
+    pub nsfw: Option<Nsfw>,
+    pub genres: Option<Vec<Genres>>,
+    pub created_at: Option<String>,
+    pub updated_at: Option<String>,
+    pub media_type: Option<MangaMediaType>,
+    pub status: Option<PublishingStatus>,
+    pub list_status: Option<ListStatus>,
+    pub num_volumes: Option<u32>,
+    pub num_chapters: Option<u32>,
+    // pub authors: Option<Vec<Authors>>,
+    pub pictures: Option<Vec<Picture>>,
+    pub background: Option<String>,
+    pub related_anime: Option<Vec<RelatedAnime>>,
+    pub related_manga: Option<Vec<RelatedManga>>, // TODO: Add Manga Related
+    pub recommendations: Option<Vec<Recommended>>,
+    // pub serialization: Option<Serialization>,
+}
+
+// -------- Structs --------
+
+#[derive(Debug, Deserialize, PartialEq)]
+pub struct RelatedManga {
+    pub node: MalMangaData,
+    pub relation_type: String,
+}
+
+// #[derive(Debug, Deserialize, PartialEq)]
+// pub struct Authors {
+//     pub id: u32,
+//     pub name: String,
+// }
+
+// -------- Methods --------
+
+#[derive(Debug)]
+pub struct MalMangaSearch {
+    pub data: Vec<MalMangaData>,
+}
+
+impl MalMangaSearch {
+    pub fn new(data: Vec<MalMangaData>) -> Self {
+        MalMangaSearch {
+            data
+        }
+    }
+    pub fn titles(&self) -> Vec<&String> {
+        self.data.iter().map(|x| &x.title).collect()
+    }
+    pub fn to_titles(self) -> Vec<String> {
+        self.data.into_iter().map(|x| x.title).collect()
+    }
+    pub fn get(&self, index: usize) -> Option<&MalMangaData> {
         self.data.get(index)
     }
 }

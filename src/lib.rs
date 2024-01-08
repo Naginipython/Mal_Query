@@ -72,22 +72,15 @@
 //! }
 //! ```
 
-// TODO: Launch 1.0
-
-// TODO: Update README to include all data
 // TODO: feature: append_fields to builds, find intuitive way to add many fields, or Fields::All
+// TODO: create getters for option layered structs, for easier access
 
-// TODO: Manga model MalMangaData
-// TODO: search_manga(?)
-// TODO: get_manga(?)
-// TODO: get_manga_rankings(?)
-// TODO: get_manga_by_url(?)
+// TODO: Models: fix authors and serialization
 
-// TODO: Various builders
+// TODO: Various manga builders
 
 // TODO: update manga
 // TODO: delete manga
-// TODO: get_user_mangalist
 
 // -- Jikan --
 // TODO: get_anime

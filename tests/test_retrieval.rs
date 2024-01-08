@@ -79,7 +79,6 @@ async fn does_anime_ranking_receive_expected_results() {
         Ok(data) => {
             // Due to the nature of the rankings changing, I believe I can only check this
             let mut rank = 1;
-            println!("{:?}", data.data);
             data.data.iter().for_each(|anime| {
                 assert_eq!(anime.rank, Some(rank));
                 rank += 1;
