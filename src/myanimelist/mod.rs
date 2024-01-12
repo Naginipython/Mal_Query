@@ -14,8 +14,8 @@ pub mod user;
 
 lazy_static! {
     // Couldn't find effective way to hide this
-    pub static ref CLIENT_ID: String = String::from("f7e5c56ef3561bb0a290a13d35b02c0b");
-    pub static ref TOKEN: Mutex<String> = Mutex::new(fs::read_to_string("token.txt").unwrap_or_default());
+    static ref CLIENT_ID: String = String::from("f7e5c56ef3561bb0a290a13d35b02c0b");
+    static ref TOKEN: Mutex<String> = Mutex::new(fs::read_to_string("token.txt").unwrap_or_default());
 }
 
 async fn client_call(url: &str) -> Result<Response, Box<dyn Error>> {
